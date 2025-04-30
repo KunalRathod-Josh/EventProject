@@ -1,0 +1,5 @@
+class AddReference < ActiveRecord::Migration[8.0]
+  def change
+    add_reference :booking_guests, :booking, foreign_key: true
+  end
+end
