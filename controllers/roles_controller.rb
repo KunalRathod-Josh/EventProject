@@ -1,22 +1,22 @@
 class RolesController < ApplicationController
-  before_action :authorize_admin
   before_action :set_role, only: [ :show, :update, :destroy ]
+  load_and_authorize_resource
 
   def index
-    roles = Role.all
-    render json: roles
+    @roles = Role.all
+    render json: @roles
   end
 
   def show
     render json: @role
   end
 
-  def create
-    role = Role.new(role_params)
-    if role.save
-      render json: role, status: :created
+  def         create
+    @role = Role.new(role_params)
+    if @role.save
+      render json: @role, status: :created
     else
-      render json: { errors: role.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @role.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -34,12 +34,6 @@ class RolesController < ApplicationController
   end
 
   private
-
-  def authorize_admin
-    unless current_user&.role&.name == "Admin"
-      render json: { error: "Access denied" }, status: :unauthorized
-    end
-  end
 
   def set_role
     @role = Role.find_by(id: params[:id])

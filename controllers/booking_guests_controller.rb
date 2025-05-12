@@ -1,5 +1,6 @@
 class BookingGuestsController < ApplicationController
   before_action :set_booking_guest, only: [ :show, :update, :destroy ]
+  load_and_authorize_resource
 
   def index
     booking_guests = BookingGuest.includes(:booking).all
